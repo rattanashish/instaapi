@@ -1,0 +1,1 @@
+web: gunicorn --pythonpath insatgramdeploy insatgramdeploy.wsgi --log-file -
