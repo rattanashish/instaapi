@@ -11,7 +11,7 @@ import os
 import sys
 
 from django.core.wsgi import get_wsgi_application
-from whitenoise.Django import DjangoWhiteNoise
+
 
 path ="/home/rattanashish/instaapi"
 if path not in sys.path:
@@ -20,4 +20,4 @@ if path not in sys.path:
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "insatgramdeploy.settings")
 
 application = get_wsgi_application()
-application = DjangoWhiteNoise(application)
+
