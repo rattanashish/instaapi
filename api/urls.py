@@ -5,7 +5,7 @@ from rest_framework.authtoken import views
 from.views import listusers,userposts
 
 urlpatterns = [
-    url(r'^$', CreateUserView.as_view(), name='account-create'),
+    url(r'^register/', CreateUserView.as_view(), name='account-create'),
     url(r'^login/',login,name='login'),
     url(r'^api-token-auth/', views.obtain_auth_token,name='token'),
     url(r'^users/', listusers.as_view(),name='list '),
