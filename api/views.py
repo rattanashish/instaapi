@@ -38,13 +38,16 @@ class CreateUserView(CreateAPIView):
                 token = Token.objects.create(user=user)
                 json = serializer.data
                 json['token'] = token.key
-                return Response(json,status = status.HTTP_200_OK)
+                return Response(json)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["POST"])
 def login(request):
+    permission_classes = [
+        permissions.AllowAny  # Or anon users can't register
+    ]
 
     username = request.data.get("username")
     password = request.data.get("password")
