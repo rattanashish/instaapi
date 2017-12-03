@@ -10,13 +10,13 @@ from django.contrib.auth.models import User
 
 # This code is triggered whenever a new user has been created and saved to the database
 
-class posts(models.Model):
-    title = models.CharField(max_length=255,)
-    content = models.TextField()
-    user = models.OneToOneField(User,null=True)
 
-class userposts(models.Model):
-    title = models.CharField(max_length=244)
-    post = models.TextField()
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL,primary_key=True)
+
+class profiledetails(models.Model):
+    profile_image = models.ImageField(upload_to='profilepics/%Y/%m/%d/', null=True, max_length=255)
+    user = models.ForeignKey(User, related_name='user_profile')
+    gender = models.CharField(max_length=10, null=True)
+    date_created = models.DateTimeField(auto_now_add=True,null=True)
+    short_bio = models.TextField(null=True)
+
 

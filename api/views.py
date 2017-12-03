@@ -1,21 +1,23 @@
-from django.shortcuts import render
+import token
 
 # Create your views here.
+from rest_framework.generics import ListCreateAPIView
+from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework import permissions
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView,RetrieveUpdateDestroyAPIView
 from django.contrib.auth import get_user_model # If used custom user model
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from  rest_framework.response import Response
 from  rest_framework import status
 from rest_framework.status import HTTP_401_UNAUTHORIZED
-from rest_framework import authentication
+from rest_framework.authentication import TokenAuthentication
 from django.contrib.auth import authenticate
 from rest_framework.decorators import api_view
-from .serilizer import UserSerializer,postserlizer,userpostserilizer
+from .serilizer import *
 from rest_framework.views import APIView
-from .models import posts
-from .models import userposts as usepostsModel
+from .models import *
+from .models import profiledetails as modelprofile
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 
@@ -54,40 +56,26 @@ def login(request):
     token, _ = Token.objects.get_or_create(user=user)
     return Response({"token": token.key})
 
-class listusers(APIView):
-
-    def post(self,request):
-        serilizer = postserlizer(data=request.data)
-        if serilizer.is_valid():
-            user = serilizer.save()
-            return Response(user,status=status.HTTP_201_CREATED)
-    def perform_create(self,serilizer):
-        serilizer.save(owner=self.request.user)
 
 
-    def get(self, request, format=None):
-        postsas = posts.objects.all().filter(user= self.request.user)
-        serializer =postserlizer(postsas, many=True)
-        return Response(serializer.data)
+class CustomObtainAuthToken(ObtainAuthToken):
+    def post(self, request, *args, **kwargs):
+        response = super(CustomObtainAuthToken, self).post(request, *args, **kwargs)
+        token = Token.objects.get(key=response.data['token'])
+        return Response({'token': token.key, 'id': token.user_id})
 
 
-class userposts(APIView):
-    def post(self, request):
-        serilizer = userpostserilizer(data=request.data)
-        if serilizer.is_valid():
-            serilizer.save()
-            return Response(serilizer.data, status=status.HTTP_201_CREATED)
 
-    def perform_create(self, serlilizer):
-        serlilizer.save(owner=self.request.user)
+class profiledetails(ListCreateAPIView):
+    model = profiledetails
+    serializer_class = profileserlizer
+    queryset = profiledetails.objects.all()
 
+    def get_queryset(self):
+        return modelprofile.objects.filter(user=self.request.user)
 
-    def get(self,request):
-        postsa = usepostsModel.objects.all().filter(owner = self.request.user)
-        serlizer = userpostserilizer(postsa,many=True)
-        return Response(serlizer.data)
-
-
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 

@@ -1,11 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User # If used custom user model
-from .models import posts,userposts
-
-
-
-User = User
-
+from .models import *
 
 class UserSerializer(serializers.ModelSerializer):
 
@@ -16,8 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create(
             username=validated_data['username'],
             email=validated_data['email'],
-            first_name =validated_data['first_name']
-
+            first_name =validated_data['first_name'],
 
         )
         user.set_password(validated_data['password'])
@@ -27,23 +21,15 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username','email','password','first_name']
-class postserlizer(serializers.ModelSerializer):
-
-    user = serializers.ReadOnlyField(source='user.username')
+        fields = ('username','email','password','first_name','last_name')
 
 
 
+class profileserlizer(serializers.ModelSerializer):
+    name = serializers.ReadOnlyField(source='user.first_name')
+    email = serializers.ReadOnlyField(source='user.email')
     class Meta:
-        model = posts
-        fields = '__all__'
-
-class userpostserilizer(serializers.ModelSerializer):
-   owner = serializers.ReadOnlyField(source='owner.username')
-
-   class Meta:
-       model = userposts
-       fields = '__all__'
-
+        model = profiledetails
+        fields = ('profile_image','gender','name','email','date_created','short_bio',)
 
 
