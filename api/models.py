@@ -20,3 +20,4 @@ class profiledetails(models.Model):
     short_bio = models.TextField(null=True)
 
 
+
