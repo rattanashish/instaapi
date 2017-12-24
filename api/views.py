@@ -39,7 +39,7 @@ class CreateUserView(CreateAPIView):
                 token = Token.objects.create(user=user)
                 json = serializer.data
                 json['token'] = token.key
-                return Response({'Reg':json})
+                return Response(json)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -102,14 +102,14 @@ class postview(APIView):
         snippets = post.objects.filter(user = self.request.user)
         serializer = postserlizer(snippets, many=True)
 
-        return Response( serializer.data)
+        return Response(serializer.data)
 
 
     def post(self, request, format=None):
         serializer = postserlizer(data=request.data)
         if serializer.is_valid():
             serializer.save(user = self.request.user)
-            return Response( serializer.data)
+            return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
