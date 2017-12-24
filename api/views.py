@@ -1,7 +1,7 @@
 import token
 
 # Create your views here.
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework import permissions
 from rest_framework.generics import CreateAPIView,RetrieveUpdateDestroyAPIView
@@ -20,6 +20,7 @@ from .models import *
 from .models import profiledetails as modelprofile
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
+from .models import profiledetails as prodet
 
 
 class CreateUserView(CreateAPIView):
@@ -38,7 +39,7 @@ class CreateUserView(CreateAPIView):
                 token = Token.objects.create(user=user)
                 json = serializer.data
                 json['token'] = token.key
-                return Response(json)
+                return Response({'Reg':json})
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -68,17 +69,41 @@ class CustomObtainAuthToken(ObtainAuthToken):
         return Response({'token': token.key, 'id': token.user_id})
 
 
+class profiledetails(APIView):
 
-class profiledetails(ListCreateAPIView):
-    model = profiledetails
-    serializer_class = profileserlizer
-    queryset = profiledetails.objects.all()
+    def get(self, request, format=None):
+        snippets = prodet.objects.all()
+        serializer = profileserlizer(snippets, many=True)
+        pro_post = serializer.data
+        numb = post.objects.count()
 
-    def get_queryset(self):
-        return modelprofile.objects.filter(user=self.request.user)
+        return Response({'profiledetails': pro_post,'number_of_posts':numb})
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    def post(self, request, format=None):
+        serializer = profileserlizer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user = self.request.user)
+            pro_post = serializer.data
+            number_of_posts = post.objects.count()
 
+            return Response({'profiledetails':pro_post,'number_of_posts':number_of_posts})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class postview(APIView):
+
+    def get(self, request, format=None):
+        snippets = post.objects.all()
+        serializer = postserlizer(snippets, many=True)
+
+        return Response({'postdetails': serializer.data})
+
+
+    def post(self, request, format=None):
+        serializer = postserlizer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user = self.request.user)
+            return Response({'postdetails': serializer.data} )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

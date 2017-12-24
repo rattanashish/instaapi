@@ -9,6 +9,8 @@ urlpatterns = [
     url(r'^login/',login,name='login'),
     url(r'^api-token-auth/', views.obtain_auth_token,name='token'),
     url(r'^profiledetails/',profiledetails.as_view(), name='profiledetails'),
+    url(r'^posts/', postview.as_view(), name='profiledetails'),
+
 
 
 
