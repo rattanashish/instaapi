@@ -102,14 +102,14 @@ class postview(APIView):
         snippets = post.objects.filter(user = self.request.user)
         serializer = postserlizer(snippets, many=True)
 
-        return Response({'postdetails': serializer.data})
+        return Response( serializer.data)
 
 
     def post(self, request, format=None):
         serializer = postserlizer(data=request.data)
         if serializer.is_valid():
             serializer.save(user = self.request.user)
-            return Response({'postdetails': serializer.data} )
+            return Response( serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
