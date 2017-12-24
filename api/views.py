@@ -72,7 +72,7 @@ class CustomObtainAuthToken(ObtainAuthToken):
 class profiledetails(APIView):
 
     def get(self, request, format=None):
-        snippets = prodet.objects.all()
+        snippets = prodet.objects.filter(user = self.request.user)
         serializer = profileserlizer(snippets, many=True)
         pro_post = serializer.data
         numb = post.objects.count()
@@ -93,7 +93,7 @@ class profiledetails(APIView):
 class postview(APIView):
 
     def get(self, request, format=None):
-        snippets = post.objects.all()
+        snippets = post.objects.filter(user = self.request.user)
         serializer = postserlizer(snippets, many=True)
 
         return Response({'postdetails': serializer.data})
