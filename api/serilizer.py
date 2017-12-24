@@ -32,7 +32,7 @@ class profileserlizer(serializers.ModelSerializer):
 
     class Meta:
         model = profiledetails
-        fields = ('profile_image','id','name','email','gender')
+        fields = ('profile_image','id','name','email','gender','short_bio')
 
 class postserlizer(serializers.ModelSerializer):
 
