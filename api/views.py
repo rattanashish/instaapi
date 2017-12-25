@@ -21,7 +21,7 @@ from .models import profiledetails as modelprofile
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 from .models import profiledetails as prodet
-from rest_framework.parsers import MultiPartParser
+from rest_framework.parsers import MultiPartParser,FileUploadParser
 
 
 class CreateUserView(CreateAPIView):
@@ -71,7 +71,7 @@ class CustomObtainAuthToken(ObtainAuthToken):
 
 
 class profiledetails(APIView):
-    parser_classes = (MultiPartParser,)
+    parser_classes = (MultiPartParser,FileUploadParser)
 
     def get(self, request, format=None):
         snippets = prodet.objects.filter(user = self.request.user)
