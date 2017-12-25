@@ -21,6 +21,7 @@ from .models import profiledetails as modelprofile
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 from .models import profiledetails as prodet
+from rest_framework.parsers import MultiPartParser
 
 
 class CreateUserView(CreateAPIView):
@@ -70,6 +71,7 @@ class CustomObtainAuthToken(ObtainAuthToken):
 
 
 class profiledetails(APIView):
+    parser_classes = (MultiPartParser,)
 
     def get(self, request, format=None):
         snippets = prodet.objects.filter(user = self.request.user)
@@ -111,5 +113,25 @@ class postview(APIView):
             serializer.save(user = self.request.user)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class followfollowingview(APIView):
+    def post(self,request):
+        serializer = followfollowingserlizer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user = self.request.user)
+        testser = serializer.data
+
+        user_profile = prodet.objects.filter(user=request.user)
+        username_follow = testser['username_follow']
+        follow_profile = prodet.objects.filter(username =username_follow)
+        if testser['type']=='follow':
+            user_profile.following.add(follow_profile)
+            follow_profile.followers.add(user_profile)
+        elif testser['type']=='unfollow':
+            user_profile.following.remove(follow_profile)
+            follow_profile.followers.remove(user_profile)
+        return Response(testser)
+
+
 
 

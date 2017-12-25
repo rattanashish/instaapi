@@ -20,6 +20,10 @@ class profiledetails(models.Model):
     gender = models.CharField(max_length=10, null=True)
     date_created = models.DateTimeField(auto_now_add=True,null=True)
     short_bio = models.TextField(null=True)
+    followers = models.ManyToManyField('profiledetails',related_name="followers_profile", blank=True)
+    following = models.ManyToManyField('profiledetails',related_name='following_profile',blank=True)
+    type = models.CharField(max_length=20,null=True)
+    username_follow = models.CharField(max_length=20,null=True)
 
 
 

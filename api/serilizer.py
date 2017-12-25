@@ -38,5 +38,10 @@ class postserlizer(serializers.ModelSerializer):
 
     class Meta:
         model = post
-        fields = ('caption','post_pic',)
+        fields = ('caption','post_pic','id')
 
+class followfollowingserlizer(serializers.ModelSerializer):
+
+    class Meta:
+        model = profiledetails
+        fields = ('type','followers','following',)
