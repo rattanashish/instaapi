@@ -77,19 +77,22 @@ class profiledetails(APIView):
         snippets = prodet.objects.filter(user = self.request.user)
         serializer = profileserlizer(snippets, many=True)
         pro_post = serializer.data
-        numb = post.objects.count()
+        numb = post.objects.filter(user = self.request.user)
+        number_of_posts = numb.count()
         post_objects = post.objects.filter(user=self.request.user)
         abc = postserlizer(post_objects, many=True)
         post_in_profile = abc.data
 
-        return Response({'profiledetails': pro_post,'number_of_posts':numb,'posts':post_in_profile})
+        return Response({'profiledetails': pro_post,'number_of_posts':number_of_posts,'posts':post_in_profile})
 
     def post(self, request, format=None):
         serializer = profileserlizer(data=request.data)
         if serializer.is_valid():
             serializer.save(user = self.request.user)
             pro_post = serializer.data
-            number_of_posts = post.objects.filter(user = self.request.user).count()
+            filter_of_posts = post.objects.filter(user = self.request.user)
+            number_of_posts = filter_of_posts.count()
+
             post_pro_d = post.objects.filter(user = self.request.user)
             post_pro_serlizer = postserlizer(post_pro_d,many=True)
             post_pro_details = post_pro_serlizer.data
@@ -103,6 +106,7 @@ class postview(APIView):
     def get(self, request, format=None):
         snippets = post.objects.filter(user = self.request.user)
         serializer = postserlizer(snippets, many=True)
+
 
         return Response(serializer.data)
 
