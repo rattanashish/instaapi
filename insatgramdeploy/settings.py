@@ -132,6 +132,9 @@ STATIC_URL = '/static/'
  #   os.path.join(BASE_DIR,'assets')
 #)
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
