@@ -89,7 +89,7 @@ class profiledetails(APIView):
         if serializer.is_valid():
             serializer.save(user = self.request.user)
             pro_post = serializer.data
-            number_of_posts = post.objects.count()
+            number_of_posts = post.objects.filter(user = self.request.user).count()
             post_pro_d = post.objects.filter(user = self.request.user)
             post_pro_serlizer = postserlizer(post_pro_d,many=True)
             post_pro_details = post_pro_serlizer.data
