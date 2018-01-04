@@ -32,7 +32,7 @@ class profileserlizer(serializers.ModelSerializer):
 
     class Meta:
         model = profiledetails
-        fields = ('profile_image','id','name','email','gender','short_bio')
+        fields = ('profile_image','id','name','email','gender','short_bio','pk')
 
 class postserlizer(serializers.ModelSerializer):
 
@@ -44,4 +44,9 @@ class followfollowingserlizer(serializers.ModelSerializer):
 
     class Meta:
         model = profiledetails
-        fields = ('type','followers','following',)
+        fields = ('type','follow_id',)
+
+class profileupdateserlizer(serializers.ModelSerializer):
+    class Meta:
+        model = profiledetails
+        fields = '__all__'

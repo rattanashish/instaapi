@@ -24,6 +24,7 @@ class profiledetails(models.Model):
     following = models.ManyToManyField('profiledetails',related_name='following_profile',blank=True)
     type = models.CharField(max_length=20,null=True)
     username_follow = models.CharField(max_length=20,null=True)
+    follow_id = models.IntegerField(null=True)
 
 
 

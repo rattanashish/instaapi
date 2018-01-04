@@ -22,6 +22,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 from .models import profiledetails as prodet
 from rest_framework.parsers import MultiPartParser,FileUploadParser
+from django.shortcuts import get_object_or_404
+
 
 
 class CreateUserView(CreateAPIView):
@@ -101,6 +103,7 @@ class profiledetails(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
 class postview(APIView):
 
     def get(self, request, format=None):
@@ -118,6 +121,9 @@ class postview(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+
+
 class followfollowingview(APIView):
     def post(self,request):
         serializer = followfollowingserlizer(data=request.data)
@@ -126,8 +132,8 @@ class followfollowingview(APIView):
         testser = serializer.data
 
         user_profile = prodet.objects.filter(user=request.user)
-        username_follow = testser['username_follow']
-        follow_profile = prodet.objects.filter(username =username_follow)
+        follow_id = testser['follow_id']
+        follow_profile = prodet.objects.filter(pk=follow_id)
         if testser['type']=='follow':
             user_profile.following.add(follow_profile)
             follow_profile.followers.add(user_profile)
@@ -136,6 +142,13 @@ class followfollowingview(APIView):
             follow_profile.followers.remove(user_profile)
         return Response(testser)
 
+
+class profiledetailsupdate(APIView):
+    def post(self,request):
+        serializer = profileserlizer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user= self.request.user)
+        return Response(serializer.data)
 
 
 
