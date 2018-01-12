@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from  rest_framework.response import Response
 from  rest_framework import status
-from rest_framework.status import HTTP_401_UNAUTHORIZED
+from rest_framework.status import HTTP_401_UNAUTxHORIZED
 from rest_framework.authentication import TokenAuthentication
 from django.contrib.auth import authenticate
 from rest_framework.decorators import api_view
@@ -131,9 +131,9 @@ class followfollowingview(APIView):
             serializer.save(user = self.request.user)
         testser = serializer.data
 
-        user_profile = prodet.objects.filter(user=request.user)
+        user_profile = prodet.objects.filter(user=request.user) 
         follow_id = testser['follow_id']
-        follow_profile = prodet.objects.filter(pk=follow_id)
+        follow_profile = prodet.objects.filter(user_id=follow_id)
         if testser['type']=='follow':
             user_profile.following.add(follow_profile)
             follow_profile.followers.add(user_profile)
@@ -151,4 +151,14 @@ class profiledetailsupdate(APIView):
         return Response(serializer.data)
 
 
+class exp(APIView):
+    def post(self,request):
+        serializer = postserlizer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=self.request.user)
+        return Response(serializer.data)
 
+    def get(self,request):
+        serializer = post.objects.filter(user_ = 'ashu')
+        dat = postserlizer(serializer,many=True)
+        return Response(dat.data)

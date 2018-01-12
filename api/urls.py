@@ -12,6 +12,6 @@ urlpatterns = [
     url(r'^posts/', postview.as_view(), name='profiledetails'),
     url(r'^followfollowingview/', followfollowingview.as_view(), name='followfollowing'),
     url(r'^profiledetailsupdate/', profiledetailsupdate.as_view(), name='profilepost_details'),
-
+    url(r'^exp/', exp.as_view(), name='exp'),
 
 ]

@@ -21,7 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username','email','password','first_name','last_name')
+        fields = ('username','email','password','first_name','last_name','id')
 
 
 
@@ -35,10 +35,11 @@ class profileserlizer(serializers.ModelSerializer):
         fields = ('profile_image','id','name','email','gender','short_bio','pk')
 
 class postserlizer(serializers.ModelSerializer):
+    name = serializers.ReadOnlyField(source='user.first_name')
 
     class Meta:
         model = post
-        fields = ('caption','post_pic','id')
+        fields = ('caption','post_pic','id','name','user_id')
 
 class followfollowingserlizer(serializers.ModelSerializer):
 
