@@ -57,4 +57,4 @@ class user_bac_serilzer(serializers.ModelSerializer):
 
     class Meta:
         model = user_bac
-        fields = ('user_video','timestamp',)
+        fields = ('user_video','timestamp','bac_level')
