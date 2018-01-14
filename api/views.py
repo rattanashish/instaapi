@@ -173,8 +173,8 @@ class user_bac_view(APIView):
         serializer = user_bac_serilzer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
-        return Response(serializer.data)
-
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     def get(self,request):
         ser = user_bac.objects.filter(user = self.request.user)
         serializer = user_bac_serilzer(ser,many=True)
