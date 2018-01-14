@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from  rest_framework.response import Response
 from  rest_framework import status
-from rest_framework.status import HTTP_401_UNAUTxHORIZED
+from rest_framework.status import HTTP_401_UNAUTHORIZED
 from rest_framework.authentication import TokenAuthentication
 from django.contrib.auth import authenticate
 from rest_framework.decorators import api_view
@@ -21,6 +21,7 @@ from .models import profiledetails as modelprofile
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 from .models import profiledetails as prodet
+
 from rest_framework.parsers import MultiPartParser,FileUploadParser
 from django.shortcuts import get_object_or_404
 
@@ -162,3 +163,20 @@ class exp(APIView):
         serializer = post.objects.filter(user_ = 'ashu')
         dat = postserlizer(serializer,many=True)
         return Response(dat.data)
+
+class user_bac_view(APIView):
+    permission_classes = [
+        permissions.IsAuthenticated,
+                          ]
+
+    def post(self,request):
+        serializer = user_bac_serilzer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+        return Response(serializer.data)
+
+    def get(self,request):
+        ser = user_bac.objects.filter(user = self.request.user)
+        serializer = user_bac_serilzer(ser,many=True)
+
+        return Response(serializer.data)

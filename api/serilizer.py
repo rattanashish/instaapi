@@ -51,3 +51,10 @@ class profileupdateserlizer(serializers.ModelSerializer):
     class Meta:
         model = profiledetails
         fields = '__all__'
+
+
+class user_bac_serilzer(serializers.ModelSerializer):
+
+    class Meta:
+        model = user_bac
+        fields = ('user_video','timestamp',)

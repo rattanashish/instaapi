@@ -13,5 +13,8 @@ urlpatterns = [
     url(r'^followfollowingview/', followfollowingview.as_view(), name='followfollowing'),
     url(r'^profiledetailsupdate/', profiledetailsupdate.as_view(), name='profilepost_details'),
     url(r'^exp/', exp.as_view(), name='exp'),
+    url(r'^bac/', user_bac_view.as_view(), name='sasa'),
+
+
 
 ]

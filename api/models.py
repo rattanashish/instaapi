@@ -38,8 +38,8 @@ class post(models.Model):
 
 
 
-
-
-
-
+class user_bac(models.Model):
+    user_video = models.FileField(upload_to='user_videos/')
+    user = models.ForeignKey(User,related_name='user_video')
+    timestamp = models.TimeField(auto_now_add=True)
 
